@@ -1,0 +1,2 @@
+2020/11/23 19:08:57 [warn] 11718#0: 1024 worker_connections exceed open file resource limit: 256
+2020/11/23 19:19:08 [warn] 11889#0: 1024 worker_connections exceed open file resource limit: 256

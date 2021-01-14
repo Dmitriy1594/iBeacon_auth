@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Starter Template for Bootstrap</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+<!--    <link href="http://0.0.0.0:5002/static/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+    <link href="{{ url_for('static', path='/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', path='/starter-template.css') }}" rel="stylesheet">
+<!--    <link href="http://0.0.0.0:5002/static/starter-template.css" rel="stylesheet">-->
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Dashboard</a>
+    <a class="navbar-brand text-danger" href="#">{{login}}</a>
+    <button class="btn btn-light btn-outline-dark btn-sm" type="button"
+            onclick="go_to_login_page()">Sign out
+    </button>
+    <button class="btn btn-light btn-outline-dark btn-sm" type="button"
+            onclick="go_to_pi_page()">PI page
+    </button>
+</nav>
+
+<div class="starter-template">
+    <h1>Create user</h1>
+</div>
+<div class="container">
+    <div class="col-lg-12 col-md-6">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start block_inline">
+
+                <div class="input-group-append">
+                    <div class="input-group-text">Имя</div>
+                    <input type="text" class="form-control" id="name"
+                           placeholder="new value here" value="Ivan">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">Фамилия</div>
+                    <input type="text" class="form-control" id="surname"
+                           placeholder="new value here" value="Ivanov">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">Отчество</div>
+                    <input type="text" class="form-control" id="last_name"
+                           placeholder="new value here" value="Ivanovich">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">count_visitors</div>
+                    <input type="text" class="form-control" id="count_visitors"
+                           placeholder="new value here" value='0'>
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">bluetooth_address_1</div>
+                    <input type="text" class="form-control" id="bluetooth_address_1"
+                           placeholder="new value here" value='B8:27:EB:97:87:63'>
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">bluetooth_address_2</div>
+                    <input type="text" class="form-control" id="bluetooth_address_2"
+                           placeholder="new value here" value='B8:27:EB:97:87:63'>
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">uuid_device_1</div>
+                    <input type="text" class="form-control" id="uuid_device_1"
+                           placeholder="new value here" value='00001200-0000-1000-8000-00805f9b34fb'>
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">uuid_device_2</div>
+                    <input type="text" class="form-control" id="uuid_device_2"
+                           placeholder="new value here" value='00001200-0000-1000-8000-00805f9b34fb'>
+                </div>
+
+
+
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="create_user()">Create user</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="starter-template">
+    <h1>Active users</h1>
+</div>
+<div class="container">
+    {% for user in users_active %}
+    <div class="col-lg-12 col-md-6">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start block_inline">
+                <strong class="d-inline-block mb-2 text-primary">ID: {{ user['id'] }}</strong>
+                <strong class="d-inline-block mb-2 text-primary">uuid: {{ user['uuid'] }}</strong>
+                <h3 class="mb-0"><a class="text-dark" href="#">{{ user['name'] }}</a></h3>
+                <h3 class="mb-0"><a class="text-dark" href="#">{{ user['surname'] }}</a></h3>
+                <h3 class="mb-0"><a class="text-dark" href="#">{{ user['last_name'] }}</a></h3>
+
+<!--                <div class="input-group-append">-->
+<!--                    <div class="input-group-text">Имя: {{ pi['name'] }}</div>-->
+<!--                </div>-->
+<!--                -->
+<!--                <div class="input-group-append">-->
+<!--                    <div class="input-group-text">Фамилия: {{ user['surname'] }}</div>-->
+<!--                </div>-->
+<!--                -->
+<!--                <div class="input-group-append">-->
+<!--                    <div class="input-group-text">Отчество: {{ user['last_name'] }}</div>-->
+<!--                </div>-->
+
+                <div class="input-group-append">
+                    <div class="input-group-text">active: {{ user['active'] }}</div>
+                    <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="turn_off('{{ user['name']|safe }}')">Turn off</button>
+                </div>
+<!--                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes_active('{{ pi['id']|safe }}', '{{ pi['name']|safe }}', '{{ pi['price']|safe }}')">Save changes-->
+<!--                </button>-->
+            </div>
+             <div class="card-body d-flex flex-column align-items-start block_inline">
+                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="get_locate_data_by_name('{{ user['name']|safe }}')">Plot the last beacon</button>
+<!--                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="get_data_plot_by_product('{{ pi['name']|safe }}')">Plot all</button>-->
+                <div id="canvas-holder">
+                    <canvas id="chart-area" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="starter-template">
+    <h1>No active users</h1>
+</div>
+<div class="container">
+    {% for user in users_active %}
+    <div class="col-lg-12 col-md-6">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start block_inline">
+                <strong class="d-inline-block mb-2 text-primary">ID: {{ id }}</strong>
+                <strong class="d-inline-block mb-2 text-primary">uuid: {{ user['uuid'] }}</strong>
+<!--                <h3 class="mb-0"><a class="text-dark" href="#">{{ user['name'] }}</a></h3>-->
+                <div class="input-group-append">
+                    <div class="input-group-text">Имя: {{ user['name'] }}</div>
+                    <input type="text" class="form-control" id="{{ user['name']|safe }}"
+                           placeholder="new name here" value="{{ user['name']|safe }}">
+                </div>
+                <div class="input-group-append">
+                    <div class="input-group-text">Фамилия: {{ user['surname'] }}</div>
+                    <input type="text" class="form-control" id="{{ user['surname']|safe }}"
+                           placeholder="new price here" value="{{ user['surname']|safe }}">
+                </div>
+                <div class="input-group-append">
+                    <div class="input-group-text">Отчество: {{ user['last_name'] }}</div>
+                    <input type="text" class="form-control" id="{{ user['last_name']|safe }}"
+                           placeholder="new price here" value="{{ user['last_name']|safe }}">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">count_visitors</div>
+                    <input type="text" class="form-control" id="count_visitors_update"
+                           placeholder="new value here" value="{{ user['count_visitors']|safe }}">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">bluetooth_address</div>
+                    <input type="text" class="form-control" id="bluetooth_address_update"
+                           placeholder="new value here" value="{{ user['bluetooth_address']|safe }}">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">uuid_device_1</div>
+                    <input type="text" class="form-control" id="uuid_device_1_update"
+                           placeholder="new value here" value="{{ user['uuid_device_1']|safe }}">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">uuid_device_2</div>
+                    <input type="text" class="form-control" id="uuid_device_2_update"
+                           placeholder="new value here" value="{{ user['uuid_device_2']|safe }}">
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">active: {{ user['active'] }}</div>
+<!--                    <input type="text" class="form-control" id="pi_active"-->
+<!--                           placeholder="new active here">-->
+                    <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="turn_on('{{ user['name']|safe }}')">Turn on</button>
+                </div>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes('{{ user['id']|safe }}', '{{ user['name']|safe }}', )">Save changes
+                </button>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="update_settings('{{ user['name']|safe }}', true)">Update settings</button>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="delete_pi('{{ user['id']|safe }}', true)">Delete PI</button>
+            </div>
+            <div class="card-body d-flex flex-column align-items-start block_inline">
+                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<!-- /.container -->
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!--    https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>-->
+<!--<script src="{{ url_for('static', path='/Chart.js') }}"></script>-->
+
+
+<!--<script src="http://0.0.0.0:5002/static/jquery.min.js"></script>-->
+<script src="{{ url_for('static', path='/jquery.min.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--<script src="http://0.0.0.0:5002/static/popper.js"></script>-->
+<script src="{{ url_for('static', path='/auth/popper.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<!--<script src="http://0.0.0.0:5002/static/bootstrap/js/bootstrap.min.js"></script>-->
+<script src="{{ url_for('static', path='/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!--<script src="http://0.0.0.0:5002/static/control_site.js"></script>-->
+<script src="{{ url_for('static', path='/control_site.js') }}"></script>
+</body>
+</html>

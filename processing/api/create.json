@@ -1,0 +1,27 @@
+[
+  {
+    "date": 1609967007.7562,
+    "device_name": "fenix 5x",
+    "uuid": [
+      "6a4e3e10-667b-11e3-949a-0800200c9a66"
+    ],
+    "address": "D0:72:10:EC:BE:64",
+    "addressType": "random",
+    "txPower": 12,
+    "rssi": -66,
+    "meters": 0.7405684692262438,
+    "product_name": "Product Name"
+  },
+  {
+    "name": "Product Name",
+    "price": 1000,
+    "count_visitors": 0,
+    "address": "B8:27:EB:97:87:63",
+    "uuid": "00001200-0000-1000-8000-00805f9b34fb",
+    "ip": "192.168.31.97",
+    "locate_data": "json_data",
+    "scanning_seconds": 5,
+    "meters_detection": 0.1
+  }
+]
+
