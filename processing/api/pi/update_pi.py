@@ -93,22 +93,10 @@ def update_pi(pi: schemas.PIUpdate, db: Session = Depends(get_db)):
 def update_by_id(pi: schemas.PIUpdateByID, db: Session = Depends(get_db)):
     pi_id = pi.id
     name = pi.name
-    price = pi.price
     meters_detection = pi.meters_detection
+    ignore_seconds = pi.ignore_seconds
     scanning_seconds = pi.scanning_seconds
-    return crud.update_pi_by_id(db, name, price, pi_id, meters_detection, scanning_seconds)
-
-
-@router.post(
-    f"{PATH_TO_API}" + "/update_price_by_name/",
-    response_model=schemas.PI,
-    tags=["PI", ]
-)
-def update_price_by_name(pi: schemas.PIUpdate, db: Session = Depends(get_db)):
-    name = pi.name
-    price = pi.price
-    currencies = pi.currencies
-    return crud.update_pi_price_by_name(db, name, price, currencies)
+    return crud.update_pi_by_id(db, name, pi_id, meters_detection, ignore_seconds, scanning_seconds)
 
 
 @router.post(

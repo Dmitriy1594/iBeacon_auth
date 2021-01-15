@@ -21,12 +21,11 @@ function auth() {
     xhr.send(data);
 }
 
-const GET_MENU_URL = "http://0.0.0.0:5002/menu"
+const GET_MENU_URL = "http://0.0.0.0:5002/menu_pis"
 
-//?id=0&login=dromakin
-
-function go_to_menu(json) {
-    window.location.replace(GET_MENU_URL + "?id=" + json.id + "&" + "login=" + json.login);
+function go_to_menu(id, login) {
+    let params = new URLSearchParams({id: id, login: login});
+    window.location.replace(GET_MENU_URL + params.toString());
 }
 
 const SIGN_UP_URL = "http://0.0.0.0:5002/register";

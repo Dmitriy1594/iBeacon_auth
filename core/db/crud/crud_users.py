@@ -176,3 +176,23 @@ def update_uuid2_by_fio(db: Session, user: schemas.UserUpdate2,):
     )
     db.commit()
     return get_user_by_fio(db, f=user.surname, i=user.name, o=user.last_name)
+
+
+def update_cv_by_fio(db: Session, user: schemas.UserUpdateCV,):
+    q = db.query(models.Users).filter(
+        models.Users.surname == user.surname,
+        models.Users.name == user.name,
+        models.Users.last_name == user.last_name,
+    ).first()
+
+    cv = user.new_count_visitors
+    if cv is None:
+        cv = q.count_visitors + 1
+
+    q.update(
+        {
+            "count_visitors": cv,
+        }
+    )
+    db.commit()
+    return get_user_by_fio(db, f=user.surname, i=user.name, o=user.last_name)

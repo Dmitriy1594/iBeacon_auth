@@ -54,18 +54,18 @@ from . import router, get_db
 )
 def get_settings_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
     pi_ = crud.get_pi_by_name(db, name=pi.name)
-    default_buttons_currency = pi_.currencies
-    default_currency = default_buttons_currency[0]
     scanning_seconds = pi_.scanning_seconds
+    ignore_seconds = pi_.ignore_seconds
     meters_detection = pi_.meters_detection
+    location = pi_.location
     version = str(datetime.datetime.now().timestamp())
 
     settings_json = {
         "server_url": SERVER_URL + ":" + str(PORT),
-        "default_currency": default_currency,
-        "default_buttons_currency": default_buttons_currency,
         "scanning_seconds": scanning_seconds,
+        "ignore_seconds": ignore_seconds,
         "meters_detection": meters_detection,
+        "location": location,
         "version": version
     }
 
@@ -79,18 +79,18 @@ def get_settings_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
 )
 def deploy_settings_json(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
     pi_ = crud.get_pi_by_name(db, name=pi.name)
-    default_buttons_currency = pi_.currencies
-    default_currency = default_buttons_currency[0]
     scanning_seconds = pi_.scanning_seconds
+    ignore_seconds = pi_.ignore_seconds
     meters_detection = pi_.meters_detection
+    location = pi_.location
     version = str(datetime.datetime.now().timestamp())
 
     settings_json = {
         "server_url": SERVER_URL + ":" + str(PORT),
-        "default_currency": default_currency,
-        "default_buttons_currency": default_buttons_currency,
         "scanning_seconds": scanning_seconds,
+        "ignore_seconds": ignore_seconds,
         "meters_detection": meters_detection,
+        "location": location,
         "version": version
     }
 

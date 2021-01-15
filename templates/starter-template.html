@@ -29,6 +29,10 @@
     <button class="btn btn-light btn-outline-dark btn-sm" type="button"
             onclick="go_to_login_page()">Sign out
     </button>
+    <button class="btn btn-light btn-outline-dark btn-sm" type="button"
+            onclick="go_to_users_page('{{ pi['id']|safe }}', '{{ login }}', '{{ pi['location']|safe }}')">Users page
+    </button>
+
 </nav>
 
 <div class="starter-template">
@@ -63,11 +67,11 @@
                            placeholder="new value here" value='00001200-0000-1000-8000-00805f9b34fb'>
                 </div>
 
-<!--                <div class="input-group-append">-->
-<!--                    <div class="input-group-text">locate_data</div>-->
-<!--                    <input type="text" class="form-control" id="pi_locate_data"-->
-<!--                           placeholder="new value here" value='locate_data'>-->
-<!--                </div>-->
+                <div class="input-group-append">
+                    <div class="input-group-text">location</div>
+                    <input type="text" class="form-control" id="pi_location"
+                           placeholder="new value here" value='location'>
+                </div>
 <!--                -->
 <!--                <div class="input-group-append">-->
 <!--                    <div class="input-group-text">active</div>-->
@@ -85,6 +89,12 @@
                     <div class="input-group-text">scanning_seconds</div>
                     <input type="text" class="form-control" id="pi_scanning_seconds"
                            placeholder="new value here" value='5.0'>
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">ignore_seconds</div>
+                    <input type="text" class="form-control" id="pi_ignore_seconds"
+                           placeholder="new value here" value='15.0'>
                 </div>
 
                 <div class="input-group-append">
@@ -154,11 +164,25 @@
                     <input type="text" class="form-control" id="{{ pi['name']|safe }}"
                            placeholder="new name here" value="{{ pi['name']|safe }}">
                 </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">location: {{ pi['location'] }}</div>
+                    <input type="text" class="form-control" id="{{ pi['location']|safe }}"
+                           placeholder="new location here" value="{{ pi['location']|safe }}">
+                </div>
+
                 <div class="input-group-append">
                     <div class="input-group-text">meters_detection: {{ pi['meters_detection'] }}</div>
                     <input type="text" class="form-control" id="{{ pi['meters_detection']|safe }}"
                            placeholder="new price here" value="{{ pi['meters_detection']|safe }}">
                 </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">ignore_seconds: {{ pi['ignore_seconds'] }}</div>
+                    <input type="text" class="form-control" id="{{ pi['ignore_seconds']|safe }}"
+                           placeholder="new ignore_seconds here" value="{{ pi['ignore_seconds']|safe }}">
+                </div>
+
                 <div class="input-group-append">
                     <div class="input-group-text">scanning_seconds: {{ pi['scanning_seconds'] }}</div>
                     <input type="text" class="form-control" id="{{ pi['scanning_seconds']|safe }}"
@@ -170,7 +194,7 @@
 <!--                           placeholder="new active here">-->
                     <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="turn_on('{{ pi['name']|safe }}')">Turn on</button>
                 </div>
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes('{{ pi['id']|safe }}', '{{ pi['name']|safe }}', '{{ pi['price']|safe }}', '{{ pi['meters_detection']|safe }}', '{{ pi['scanning_seconds']|safe }}' )">Save changes
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes('{{ pi['id']|safe }}', '{{ pi['name']|safe }}', '{{ pi['meters_detection']|safe }}', '{{ pi['ignore_seconds']|safe }}', '{{ pi['scanning_seconds']|safe }}' )">Save changes
                 </button>
                 <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="update_settings('{{ pi['name']|safe }}', true)">Update settings</button>
                 <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="delete_pi('{{ pi['id']|safe }}', true)">Delete PI</button>

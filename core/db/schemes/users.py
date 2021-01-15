@@ -22,10 +22,10 @@ class UserBase(BaseModel):
     surname: str
     last_name: str
     count_visitors: int = 0
-    bluetooth_address_1: str
-    bluetooth_address_2: str
-    uuid_device_1: str
-    uuid_device_2: str
+    bluetooth_address_1: str = ""
+    bluetooth_address_2: str = ""
+    uuid_device_1: str = ""
+    uuid_device_2: str = ""
     location: str
 
 
@@ -59,12 +59,24 @@ class UserUpdate2(BaseModel):
     uuid_device_2: str
 
 
-class UserFindByFIO(BaseModel):
+class UserUpdateCV(BaseModel):
+    name: str
+    surname: str
+    last_name: str
+    new_count_visitors: int = None
+
+
+class UserFindByLocation(BaseModel):
     location: str
     active: Optional[bool] = False
 
 
-class UserFindByLocation(BaseModel):
+class UserFindByUUID(BaseModel):
+    uuid: str
+    active: Optional[bool] = False
+
+
+class UserFindByFIO(BaseModel):
     name: str
     surname: str
     last_name: str

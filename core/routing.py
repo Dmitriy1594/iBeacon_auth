@@ -15,6 +15,7 @@ __version__ = '20201117'
 from typing import List
 import requests
 import json
+from urllib.parse import unquote
 
 import fastapi
 from fastapi import FastAPI, Request, status, HTTPException, Depends
@@ -36,6 +37,8 @@ from sqlalchemy.orm import Session
 from core.db import models
 from core.db.crud import crud_pis
 from core.db.crud import crud_users
+
+from core.db import schemes
 
 from core.auth.token import is_api_token
 
@@ -177,32 +180,59 @@ def get_db():
         db.close()
 
 
-@app.get(path='/menu', tags=["site", "pages"], include_in_schema=False, response_class=HTMLResponse)
-async def menu(request: Request, id: str = None, login: str = None, token: str = None,  db: Session = Depends(get_db)):
-    if id is None or login is None or token is None or is_api_token(token) == False or len(token) != 9:
+@app.get(path='/menu_pis', tags=["site", "pages"], include_in_schema=False, response_class=HTMLResponse)
+async def menu_pis(
+    request: Request,
+    id: str = None,
+    login: str = None,
+    # token: str = None,
+    db: Session = Depends(get_db)
+):
+    if id is None or login is None: # or token is None or is_api_token(token) == False or len(token) != 9:
         return RedirectResponse("/auth")
 
     pis_no_active = jsonable_encoder(crud_pis.get_pis(db, skip=0, limit=1000, active=False))
     pis_active = jsonable_encoder(crud_pis.get_pis(db, skip=0, limit=1000, active=True))
 
     return templates.TemplateResponse(
-        "starter-template.html", {"request": request, "id": id, "login": login, "pis_no_active": pis_no_active, "pis_active": pis_active})
+        "starter-template.html",
+        {
+            "request": request,
+            "id": id,
+            "login": login,
+            "pis_no_active": pis_no_active,
+            "pis_active": pis_active
+        }
+    )
 
 
 @app.get(path='/menu_users', tags=["site", "pages"], include_in_schema=False, response_class=HTMLResponse)
-async def menu(request: Request, location: str, id: str = None, login: str = None, token: str = None, db: Session = Depends(get_db)):
-    if location is None or id is None or login is None or token is None or is_api_token(token) == False or len(token) != 16:
+async def menu_users(
+    request: Request,
+    # site: schemes.site.MenuUsers,
+    id_: str = None,
+    login: str = None,
+    location: str = None,
+    # token: str = None,
+    db: Session = Depends(get_db)
+):
+    # location = site.location
+    # id_ = site.id
+    # login = site.login
+    location_ = unquote(location)
+
+    if location is None or id is None or login is None: # or token is None or is_api_token(token) == False or len(token) != 16:
         return RedirectResponse("/auth")
 
-    users_no_active = jsonable_encoder(crud_users.get_users_by_location(db, location=location, skip=0, limit=1000, active=False))
-    users_active = jsonable_encoder(crud_users.get_users_by_location(db, location=location, skip=0, limit=1000, active=True))
+    users_no_active = jsonable_encoder(crud_users.get_users_by_location(db, location=location_, skip=0, limit=1000, active=False))
+    users_active = jsonable_encoder(crud_users.get_users_by_location(db, location=location_, skip=0, limit=1000, active=True))
 
     return templates.TemplateResponse(
         "users.html",
         {
             "request": request,
-            "id": id,
-            "location": location,
+            "id": id_,
+            "location": location_,
             "login": login,
             "users_no_active": users_no_active,
             "users_active": users_active

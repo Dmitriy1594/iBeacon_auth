@@ -15,3 +15,4 @@ from . import admins
 from . import beacons
 from . import pis
 from . import users
+from . import site

@@ -26,11 +26,12 @@
     </button>
     <a class="navbar-brand" href="#">Dashboard</a>
     <a class="navbar-brand text-danger" href="#">{{login}}</a>
+    <a class="navbar-brand text-danger" href="#">{{location}}</a>
     <button class="btn btn-light btn-outline-dark btn-sm" type="button"
             onclick="go_to_login_page()">Sign out
     </button>
     <button class="btn btn-light btn-outline-dark btn-sm" type="button"
-            onclick="go_to_pi_page()">PI page
+            onclick="go_to_pi_page('{{ id|safe }}', '{{ login|safe }}')">PI page
     </button>
 </nav>
 
@@ -90,8 +91,6 @@
                            placeholder="new value here" value='00001200-0000-1000-8000-00805f9b34fb'>
                 </div>
 
-
-
                 <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="create_user()">Create user</button>
 
             </div>
@@ -108,38 +107,32 @@
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start block_inline">
                 <strong class="d-inline-block mb-2 text-primary">ID: {{ user['id'] }}</strong>
-                <strong class="d-inline-block mb-2 text-primary">uuid: {{ user['uuid'] }}</strong>
+                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid_device_1']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>
+
                 <h3 class="mb-0"><a class="text-dark" href="#">{{ user['name'] }}</a></h3>
                 <h3 class="mb-0"><a class="text-dark" href="#">{{ user['surname'] }}</a></h3>
                 <h3 class="mb-0"><a class="text-dark" href="#">{{ user['last_name'] }}</a></h3>
 
-<!--                <div class="input-group-append">-->
-<!--                    <div class="input-group-text">Имя: {{ pi['name'] }}</div>-->
-<!--                </div>-->
-<!--                -->
-<!--                <div class="input-group-append">-->
-<!--                    <div class="input-group-text">Фамилия: {{ user['surname'] }}</div>-->
-<!--                </div>-->
-<!--                -->
-<!--                <div class="input-group-append">-->
-<!--                    <div class="input-group-text">Отчество: {{ user['last_name'] }}</div>-->
-<!--                </div>-->
+                <div class="input-group-append">
+                    <div class="input-group-text">bluetooth_address_1: {{ user['bluetooth_address_1']|safe }}</div>
+                </div>
 
                 <div class="input-group-append">
-                    <div class="input-group-text">active: {{ user['active'] }}</div>
-                    <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="turn_off('{{ user['name']|safe }}')">Turn off</button>
+                    <div class="input-group-text">bluetooth_address_2: {{ user['bluetooth_address_2']|safe }}</div>
                 </div>
-<!--                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes_active('{{ pi['id']|safe }}', '{{ pi['name']|safe }}', '{{ pi['price']|safe }}')">Save changes-->
-<!--                </button>-->
-            </div>
-             <div class="card-body d-flex flex-column align-items-start block_inline">
-                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="get_locate_data_by_name('{{ user['name']|safe }}')">Plot the last beacon</button>
-<!--                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="get_data_plot_by_product('{{ pi['name']|safe }}')">Plot all</button>-->
-                <div id="canvas-holder">
-                    <canvas id="chart-area" width="400" height="400"></canvas>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">uuid_device_1: {{ user['uuid_device_1']|safe }}</div>
                 </div>
-            </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">uuid_device_2: {{ user['uuid_device_2']|safe }}</div>
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text" id="active_{{ user['uuid_device_1']|safe }}">active: {{ user['active'] }}</div>
+                </div>
+
         </div>
     </div>
     {% endfor %}
@@ -153,62 +146,55 @@
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start block_inline">
                 <strong class="d-inline-block mb-2 text-primary">ID: {{ id }}</strong>
-                <strong class="d-inline-block mb-2 text-primary">uuid: {{ user['uuid'] }}</strong>
+                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid_device_1']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>
 <!--                <h3 class="mb-0"><a class="text-dark" href="#">{{ user['name'] }}</a></h3>-->
                 <div class="input-group-append">
-                    <div class="input-group-text">Имя: {{ user['name'] }}</div>
-                    <input type="text" class="form-control" id="{{ user['name']|safe }}"
-                           placeholder="new name here" value="{{ user['name']|safe }}">
+                    <div class="input-group-text" id="{{ user['name'] }}">Имя: {{ user['name'] }}</div>
                 </div>
                 <div class="input-group-append">
-                    <div class="input-group-text">Фамилия: {{ user['surname'] }}</div>
-                    <input type="text" class="form-control" id="{{ user['surname']|safe }}"
-                           placeholder="new price here" value="{{ user['surname']|safe }}">
+                    <div class="input-group-text" id="{{ user['surname'] }}">Фамилия: {{ user['surname'] }}</div>
                 </div>
                 <div class="input-group-append">
-                    <div class="input-group-text">Отчество: {{ user['last_name'] }}</div>
-                    <input type="text" class="form-control" id="{{ user['last_name']|safe }}"
-                           placeholder="new price here" value="{{ user['last_name']|safe }}">
+                    <div class="input-group-text"id="{{ user['last_name'] }}">Отчество: {{ user['last_name'] }}</div>
+                </div>
+
+<!--                <div class="input-group-append">-->
+<!--                    <div class="input-group-text">count_visitors: {{ user['count_visitors']|safe }}</div>-->
+<!--                </div>-->
+
+                <div class="input-group-append">
+                    <div class="input-group-text">bluetooth_address_1</div>
+                    <input type="text" class="form-control" id="{{ user['bluetooth_address_1']|safe }}"
+                           placeholder="new value here" value="{{ user['bluetooth_address_1']|safe }}">
                 </div>
 
                 <div class="input-group-append">
-                    <div class="input-group-text">count_visitors</div>
-                    <input type="text" class="form-control" id="count_visitors_update"
-                           placeholder="new value here" value="{{ user['count_visitors']|safe }}">
-                </div>
-
-                <div class="input-group-append">
-                    <div class="input-group-text">bluetooth_address</div>
-                    <input type="text" class="form-control" id="bluetooth_address_update"
-                           placeholder="new value here" value="{{ user['bluetooth_address']|safe }}">
+                    <div class="input-group-text">bluetooth_address_2</div>
+                    <input type="text" class="form-control" id="{{ user['bluetooth_address_2']|safe }}"
+                           placeholder="new value here" value="{{ user['bluetooth_address_2']|safe }}">
                 </div>
 
                 <div class="input-group-append">
                     <div class="input-group-text">uuid_device_1</div>
-                    <input type="text" class="form-control" id="uuid_device_1_update"
+                    <input type="text" class="form-control" id="{{ user['uuid_device_1']|safe }}"
                            placeholder="new value here" value="{{ user['uuid_device_1']|safe }}">
                 </div>
 
                 <div class="input-group-append">
                     <div class="input-group-text">uuid_device_2</div>
-                    <input type="text" class="form-control" id="uuid_device_2_update"
+                    <input type="text" class="form-control" id="{{ user['uuid_device_2']|safe }}"
                            placeholder="new value here" value="{{ user['uuid_device_2']|safe }}">
                 </div>
 
                 <div class="input-group-append">
-                    <div class="input-group-text">active: {{ user['active'] }}</div>
-<!--                    <input type="text" class="form-control" id="pi_active"-->
-<!--                           placeholder="new active here">-->
-                    <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="turn_on('{{ user['name']|safe }}')">Turn on</button>
+                    <div class="input-group-text" id="no_active">active: {{ user['active'] }}</div>
                 </div>
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes('{{ user['id']|safe }}', '{{ user['name']|safe }}', )">Save changes
-                </button>
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="update_settings('{{ user['name']|safe }}', true)">Update settings</button>
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="delete_pi('{{ user['id']|safe }}', true)">Delete PI</button>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes('{{ user['id']|safe }}', '{{ user['name']|safe }}', )">Save changes</button>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="delete_user('{{ user['id']|safe }}', true)">Delete User</button>
             </div>
-            <div class="card-body d-flex flex-column align-items-start block_inline">
-                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>
-            </div>
+<!--            <div class="card-body d-flex flex-column align-items-start block_inline">-->
+<!--                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>-->
+<!--            </div>-->
         </div>
     </div>
     {% endfor %}
@@ -234,6 +220,6 @@
 <script src="{{ url_for('static', path='/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <!--<script src="http://0.0.0.0:5002/static/control_site.js"></script>-->
-<script src="{{ url_for('static', path='/control_site.js') }}"></script>
+<script src="{{ url_for('static', path='users/control_main.js') }}"></script>
 </body>
 </html>

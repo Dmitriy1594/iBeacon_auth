@@ -33,7 +33,7 @@ function go_to_login_page() {
     window.location.replace(GET_AUTH_URL);
 }
 
-const GET_PASSWORD = "http://0.0.0.0:5002/v1/get_example_password"
+const GET_PASSWORD = "http://0.0.0.0:5002/v1/get_example_password?length=16"
 
 
 function get_example_password() {

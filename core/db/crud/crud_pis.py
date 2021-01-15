@@ -33,10 +33,12 @@ def create_pi(
     count_visitors = pi.count_visitors
     address = pi.address
     uuid = pi.uuid
+    location = pi.location
     locate_data = pi.locate_data
     active = False
     ip = pi.ip
     scanning_seconds = pi.scanning_seconds
+    ignore_seconds = pi.ignore_seconds
     meters_detection = pi.meters_detection
 
     db_pi = models.Raspberry(
@@ -44,10 +46,12 @@ def create_pi(
         count_visitors=count_visitors,
         address=address,
         uuid=uuid,
+        location=location,
         locate_data=locate_data,
         active=active,
         ip=ip,
         scanning_seconds=scanning_seconds,
+        ignore_seconds=ignore_seconds,
         meters_detection=meters_detection,
     )
     db.add(db_pi)
@@ -160,6 +164,7 @@ def update_pi_by_id(
         name: str = None,
         pi_id: int = None,
         meters_detection: float = 1.0,
+        ignore_seconds: float = 15.0,
         scanning_seconds: float = 5.0,
 ):
     if name is not None:
@@ -169,6 +174,7 @@ def update_pi_by_id(
             {
                 "name": name,
                 "meters_detection": meters_detection,
+                "ignore_seconds": ignore_seconds,
                 "scanning_seconds": scanning_seconds,
             }
         )

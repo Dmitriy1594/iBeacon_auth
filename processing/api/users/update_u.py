@@ -76,3 +76,13 @@ def update_uuid1_by_fio(user: schemas.UserUpdate1, db: Session = Depends(get_db)
 def update_uuid2_by_fio(user: schemas.UserUpdate2, db: Session = Depends(get_db)):
     db_user = crud.update_uuid2_by_fio(db, user)
     return db_user
+
+
+@router.post(
+    f"{PATH_TO_API}" + "/update_cv_by_fio/",
+    response_model=schemas.User,
+    tags=["User", ]
+)
+def update_cv_by_fio(user: schemas.UserUpdateCV, db: Session = Depends(get_db)):
+    db_user = crud.update_cv_by_fio(db, user)
+    return db_user

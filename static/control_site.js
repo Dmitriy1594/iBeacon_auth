@@ -7,9 +7,11 @@ function create_pi() {
     let count_visitors = parseInt(document.getElementById("pi_count_visitors").value);
     let address = document.getElementById("pi_address").value;
     let uuid = document.getElementById("pi_uuid").value;
+    let location = document.getElementById("pi_location").value;
     let locate_data = "locate_data";
     let ip = document.getElementById("pi_ip").value;
     let scanning_seconds = parseFloat(document.getElementById("pi_scanning_seconds").value);
+    let ignore_seconds = parseFloat(document.getElementById("pi_ignore_seconds").value);
     let meters_detection = parseFloat(document.getElementById("pi_meters_detection").value);
 
     let xhr = new XMLHttpRequest();
@@ -33,9 +35,11 @@ function create_pi() {
         "count_visitors": count_visitors,
         "address": address,
         "uuid": uuid,
+        "location": location,
         "locate_data": locate_data,
         "ip": ip,
         "scanning_seconds": scanning_seconds,
+        "ignore_seconds": ignore_seconds,
         "meters_detection": meters_detection
     });
     xhr.send(data);
@@ -192,11 +196,19 @@ function set_null_count_visitors(name,) {
 
 const UPDATE_NP_BY_ID = "http://0.0.0.0:5002/v1/update_by_id/";
 
-function save_changes(id, name, price, meters_detection, scanning_seconds,  reload= true) {
+function save_changes(
+    id,
+    name,
+    meters_detection,
+    ignore_seconds,
+    scanning_seconds,
+    reload= true
+) {
     let new_name = document.getElementById(name).value;
     // parseFloat("554,20".replace(",", "."))
     let new_price = parseFloat(document.getElementById(price).value);
     let new_meters_detection = parseFloat(document.getElementById(meters_detection).value);
+    let new_ignore_seconds = parseFloat(document.getElementById(ignore_seconds).value);
     let new_scanning_seconds = parseFloat(document.getElementById(scanning_seconds).value);
 
     let xhr = new XMLHttpRequest();
@@ -224,36 +236,8 @@ function save_changes(id, name, price, meters_detection, scanning_seconds,  relo
             "name": new_name,
             "price": new_price,
             "meters_detection": new_meters_detection,
+            "ignore_seconds": new_ignore_seconds,
             "scanning_seconds": new_scanning_seconds,
-        }
-    );
-    xhr.send(data);
-}
-
-
-const DEPLOY_DATA_TO_PI = "http://0.0.0.0:5002/v1/deploy_data_json/";
-
-
-function deploy_data_to_pi(name, reload= true) {
-    let xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            let json = JSON.parse(this.responseText);
-            // console.log(json);
-            // reload
-            // location.reload();
-            if (reload === true) {
-                location.reload();
-            }
-        }
-    };
-
-    xhr.open("POST", DEPLOY_DATA_TO_PI, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    let data = JSON.stringify(
-        {
-            "name": name
         }
     );
     xhr.send(data);
@@ -431,3 +415,9 @@ function plots(data) {
     });
 }
 
+const USERS_URL = "http://0.0.0.0:5002/menu_users"
+
+function go_to_menu(id, login, location) {
+    let params = new URLSearchParams({id: id, login: login, location: location});
+    window.location.replace(USERS_URL + params.toString());
+}

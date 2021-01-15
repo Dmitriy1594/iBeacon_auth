@@ -52,9 +52,11 @@ class Raspberry(Base):
     uuid = Column(String, index=True, unique=True)
     address = Column(String, index=True)
     ip = Column(String, index=True, unique=True)
+    location = Column(String, index=True, )
     locate_data = Column(String) # the last customer
     active = Column(Boolean)
     scanning_seconds = Column(Float)
+    ignore_seconds = Column(Float)
     meters_detection = Column(Float)
 
 

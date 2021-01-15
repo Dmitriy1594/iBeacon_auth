@@ -94,6 +94,6 @@ def get_users_by_location(location: str = None, skip: int = 0, limit: int = 100,
     response_model=schemas.User,
     tags=["User", ]
 )
-def get_user_by_uuid(user: schemas.UserFindByFIO, db: Session = Depends(get_db)):
+def get_user_by_uuid(user: schemas.UserFindByUUID, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_uuid(db, uuid=user.uuid)
     return db_user
