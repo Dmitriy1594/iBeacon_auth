@@ -30,7 +30,8 @@ from config.environment import DEBUG
 # sign on
 def create_admin(db: Session, user: schemas.AdminCreate):
     hashed_password = api_token_hash(token=user.password)
-    db_user = models.Admin(login=user.login, hashed_password=hashed_password)
+    login = str(user.login).lower()
+    db_user = models.Admin(login=login, hashed_password=hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

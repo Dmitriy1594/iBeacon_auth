@@ -91,7 +91,37 @@ app.add_middleware(
 )
 
 app.include_router(
-    beacon.router,
+    beacon.cb.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    beacon.db.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    beacon.gb.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    beacon.ub.router,
     # dependencies=[fastapi.Depends(check_token_header)],
     responses={
         404: {"description": "Not found"},
@@ -111,7 +141,7 @@ app.include_router(
 )
 
 app.include_router(
-    pi.router,
+    pi.cpi.router,
     # dependencies=[fastapi.Depends(check_token_header)],
     responses={
         404: {"description": "Not found"},
@@ -121,7 +151,77 @@ app.include_router(
 )
 
 app.include_router(
-    users.router,
+    pi.dpi.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    pi.gpi.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    pi.mpi.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    pi.upi.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    users.cuser.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    users.duser.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    users.guser.router,
+    # dependencies=[fastapi.Depends(check_token_header)],
+    responses={
+        404: {"description": "Not found"},
+    }
+    #     422: {'description': 'Validation Error', 'model': ValidationErrorModelResponse}
+    # },
+)
+
+app.include_router(
+    users.upuser.router,
     # dependencies=[fastapi.Depends(check_token_header)],
     responses={
         404: {"description": "Not found"},
@@ -139,7 +239,7 @@ async def get_open_api_endpoint():
 
 # ADMIN PANEL
 @app.get(path='/admin', tags=["secret"], include_in_schema=False)
-async def get_documentation(username, hashed_password: str = Depends(get_current_username)):
+async def get_documentation(username: str = Depends(get_current_username)):
     return get_swagger_ui_html(openapi_url=f'{PATH_TO_API}', title="docs")
 
 
@@ -188,7 +288,9 @@ async def menu_pis(
     # token: str = None,
     db: Session = Depends(get_db)
 ):
-    if id is None or login is None: # or token is None or is_api_token(token) == False or len(token) != 9:
+    login_ = unquote(login)
+
+    if id is None or login_ is None: # or token is None or is_api_token(token) == False or len(token) != 9:
         return RedirectResponse("/auth")
 
     pis_no_active = jsonable_encoder(crud_pis.get_pis(db, skip=0, limit=1000, active=False))
@@ -199,7 +301,7 @@ async def menu_pis(
         {
             "request": request,
             "id": id,
-            "login": login,
+            "login": login_,
             "pis_no_active": pis_no_active,
             "pis_active": pis_active
         }

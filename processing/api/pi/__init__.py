@@ -12,16 +12,10 @@ __copyright__ = "Cybertonica LLC, London, 2021"
 __status__ = 'Development'
 __version__ = '20210114'
 
-from fastapi import APIRouter
-from core.db.database import SessionLocal
 
+from . import create_pi as cpi
+from . import delete_pi as dpi
+from . import get_pi as gpi
+from . import manage_pi as mpi
+from . import update_pi as upi
 
-router = APIRouter()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()

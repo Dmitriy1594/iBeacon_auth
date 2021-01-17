@@ -12,16 +12,7 @@ __copyright__ = "Cybertonica LLC, London, 2021"
 __status__ = 'Development'
 __version__ = '20210114'
 
-from fastapi import APIRouter
-from core.db.database import SessionLocal
-
-
-router = APIRouter()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from . import create_beacon as cb
+from . import delete_beacon as db
+from . import get_beacon as gb
+from . import update_beacon as ub

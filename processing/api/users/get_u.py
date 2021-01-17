@@ -35,17 +35,16 @@ from core.auth.token import api_token_hash, generate_random_token
 
 from config.settings import PATH_TO_API
 
-# router = APIRouter()
-#
-#
-# # Dependency
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-from . import router, get_db
+router = APIRouter()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @router.post(
@@ -71,7 +70,7 @@ def get_user(id: int, active: bool, db: Session = Depends(get_db)):
 
 @router.post(
     f"{PATH_TO_API}" + "/get_users/",
-    response_model=[schemas.User],
+    response_model=List[schemas.User],
     tags=["User", ]
 )
 def get_users(skip: int = 0, limit: int = 100, active: bool = True, db: Session = Depends(get_db)):
@@ -81,7 +80,7 @@ def get_users(skip: int = 0, limit: int = 100, active: bool = True, db: Session 
 
 @router.post(
     f"{PATH_TO_API}" + "/get_users_by_location/",
-    response_model=[schemas.User],
+    response_model=List[schemas.User],
     tags=["User", ]
 )
 def get_users_by_location(location: str = None, skip: int = 0, limit: int = 100, active: bool = True, db: Session = Depends(get_db)):

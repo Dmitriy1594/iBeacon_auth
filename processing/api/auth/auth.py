@@ -60,7 +60,7 @@ def sign_on(user: schemas.AdminCreate, db: Session = Depends(get_db)):
     tags=["admin", ]
 )
 def sign_in(auth_model: schemas.AdminCreate, db: Session = Depends(get_db)):
-    login = auth_model.login
+    login = str(auth_model.login).lower()
     password = auth_model.password
     hash_password = api_token_hash(password)
 
@@ -78,7 +78,7 @@ def sign_in(auth_model: schemas.AdminCreate, db: Session = Depends(get_db)):
     tags=["admin", ]
 )
 def change_password(auth_model: schemas.AdminUpdate, db: Session = Depends(get_db)):
-    login = auth_model.login
+    login = str(auth_model.login).lower()
     if crud.check_admin_by_login(db, login):
         token_update = auth_model.token_update
         if len(token_update) != 20:

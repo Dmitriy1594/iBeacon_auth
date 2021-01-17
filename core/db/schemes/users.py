@@ -63,6 +63,18 @@ class UserUpdateCV(BaseModel):
     name: str
     surname: str
     last_name: str
+
+
+class UserUpdateActive(BaseModel):
+    name: str
+    surname: str
+    last_name: str
+
+
+class UserUpdateCV(BaseModel):
+    name: str
+    surname: str
+    last_name: str
     new_count_visitors: int = None
 
 

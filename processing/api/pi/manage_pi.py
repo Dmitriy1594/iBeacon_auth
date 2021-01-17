@@ -33,23 +33,22 @@ from core.auth.token import api_token_hash, generate_random_token
 
 from config.settings import PATH_TO_API, SERVER_URL, PI_SSH_CONNECTION_PROPERTIES, PORT
 
-# router = APIRouter()
-#
-#
-# # Dependency
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-from . import router, get_db
+router = APIRouter()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 # settings.json
 @router.post(
     f"{PATH_TO_API}" + "/get_settings_pi/",
-    response_model=schemas.PIsettings,
+    # response_model=schemas.PIFindBase,
     tags=["PI", "manage"]
 )
 def get_settings_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
@@ -61,6 +60,7 @@ def get_settings_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
     version = str(datetime.datetime.now().timestamp())
 
     settings_json = {
+        "name": pi.name,
         "server_url": SERVER_URL + ":" + str(PORT),
         "scanning_seconds": scanning_seconds,
         "ignore_seconds": ignore_seconds,
@@ -74,7 +74,7 @@ def get_settings_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
 
 @router.post(
     f"{PATH_TO_API}" + "/deploy_settings_json/",
-    response_model=schemas.PIsettings,
+    # response_model=schemas.PIsettings,
     tags=["PI", "manage"]
 )
 def deploy_settings_json(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
@@ -86,6 +86,7 @@ def deploy_settings_json(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
     version = str(datetime.datetime.now().timestamp())
 
     settings_json = {
+        "name": pi.name,
         "server_url": SERVER_URL + ":" + str(PORT),
         "scanning_seconds": scanning_seconds,
         "ignore_seconds": ignore_seconds,
@@ -120,7 +121,7 @@ def deploy_settings_json(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
 # turn on program
 @router.post(
     f"{PATH_TO_API}" + "/turn_on/",
-    response_model=schemas.PIsettings,
+    # response_model=schemas.PIsettings,
     tags=["PI", "manage"]
 )
 def turn_on(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
@@ -156,35 +157,13 @@ def turn_on(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
         return JSONResponse(content=jsonable_encoder(info))
 
 
-@router.post(
-    f"{PATH_TO_API}" + "/update_turn_by_pi/",
-    response_model=schemas.PIsettings,
-    tags=["PI", ]
-)
-def update_turn_by_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
-    pi_ = crud.get_pi_by_name(db, name=pi.name)
-    active = pi_.active
-    if active == False:
-        info = {
-            "info_output": "Program is running!"
-        }
 
-        # update in DB
-        crud.update_pi_active(db, pi.name, True)
-
-        # result
-        return JSONResponse(content=jsonable_encoder(info))
-    else:
-        info = {
-            "info_output": "This PI is active!",
-        }
-        return JSONResponse(content=jsonable_encoder(info))
 
 
 # turn off program
 @router.post(
     f"{PATH_TO_API}" + "/turn_off/",
-    response_model=schemas.PIsettings,
+    # response_model=schemas.PIsettings,
     tags=["PI", "manage"]
 )
 def turn_off(pi: schemas.PIFindBase, db: Session = Depends(get_db)):

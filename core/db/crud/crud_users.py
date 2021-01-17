@@ -128,13 +128,56 @@ def get_first_no_active_user(db: Session):
 
 
 # Update
-def update_uuids_by_fio(db: Session, user: schemas.UserUpdateAll,):
-    q = db.query(models.Users).filter(
+def increase_cv_by_fio(db: Session, user: schemas.UserUpdateCV,):
+    q = get_user_by_fio(db, f=user.surname, i=user.name, o=user.last_name)
+    cv = q.count_visitors
+    db.query(models.Users).filter(
         models.Users.surname == user.surname,
         models.Users.name == user.name,
         models.Users.last_name == user.last_name,
-    ).first()
-    q.update(
+    ).update(
+        {
+            "count_visitors": cv + 1,
+        }
+    )
+    db.commit()
+    return get_user_by_fio(db, f=user.surname, i=user.name, o=user.last_name)
+
+
+def activate_by_fio(db: Session, user: schemas.UserUpdateActive,):
+    db.query(models.Users).filter(
+        models.Users.surname == user.surname,
+        models.Users.name == user.name,
+        models.Users.last_name == user.last_name,
+    ).update(
+        {
+            "active": True,
+        }
+    )
+    db.commit()
+    return get_user_by_fio(db, f=user.surname, i=user.name, o=user.last_name)
+
+
+def deactivate_by_fio(db: Session, user: schemas.UserUpdateActive,):
+    db.query(models.Users).filter(
+        models.Users.surname == user.surname,
+        models.Users.name == user.name,
+        models.Users.last_name == user.last_name,
+    ).update(
+        {
+            "active": False,
+        }
+    )
+    db.commit()
+    return get_user_by_fio(db, f=user.surname, i=user.name, o=user.last_name)
+
+
+def update_uuids_by_fio(db: Session, user: schemas.UserUpdateAll,):
+    db.query(models.Users).filter(
+        models.Users.surname == user.surname,
+        models.Users.name == user.name,
+        models.Users.last_name == user.last_name,
+    ).update(
         {
             "bluetooth_address_1": user.bluetooth_address_1,
             "bluetooth_address_2": user.bluetooth_address_2,
@@ -147,12 +190,11 @@ def update_uuids_by_fio(db: Session, user: schemas.UserUpdateAll,):
 
 
 def update_uuid1_by_fio(db: Session, user: schemas.UserUpdate1,):
-    q = db.query(models.Users).filter(
+    db.query(models.Users).filter(
         models.Users.surname == user.surname,
         models.Users.name == user.name,
         models.Users.last_name == user.last_name,
-    ).first()
-    q.update(
+    ).update(
         {
             "bluetooth_address_1": user.bluetooth_address_1,
             "uuid_device_1": user.uuid_device_1,
@@ -163,12 +205,11 @@ def update_uuid1_by_fio(db: Session, user: schemas.UserUpdate1,):
 
 
 def update_uuid2_by_fio(db: Session, user: schemas.UserUpdate2,):
-    q = db.query(models.Users).filter(
+    db.query(models.Users).filter(
         models.Users.surname == user.surname,
         models.Users.name == user.name,
         models.Users.last_name == user.last_name,
-    ).first()
-    q.update(
+    ).update(
         {
             "bluetooth_address_1": user.bluetooth_address_2,
             "uuid_device_1": user.uuid_device_2,
@@ -189,7 +230,11 @@ def update_cv_by_fio(db: Session, user: schemas.UserUpdateCV,):
     if cv is None:
         cv = q.count_visitors + 1
 
-    q.update(
+    db.query(models.Users).filter(
+        models.Users.surname == user.surname,
+        models.Users.name == user.name,
+        models.Users.last_name == user.last_name,
+    ).update(
         {
             "count_visitors": cv,
         }

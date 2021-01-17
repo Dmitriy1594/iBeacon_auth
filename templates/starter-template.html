@@ -29,9 +29,6 @@
     <button class="btn btn-light btn-outline-dark btn-sm" type="button"
             onclick="go_to_login_page()">Sign out
     </button>
-    <button class="btn btn-light btn-outline-dark btn-sm" type="button"
-            onclick="go_to_users_page('{{ pi['id']|safe }}', '{{ login }}', '{{ pi['location']|safe }}')">Users page
-    </button>
 
 </nav>
 
@@ -121,10 +118,26 @@
                 <strong class="d-inline-block mb-2 text-primary">ID: {{ pi['id'] }}</strong>
                 <strong class="d-inline-block mb-2 text-primary">uuid: {{ pi['uuid'] }}</strong>
                 <h3 class="mb-0"><a class="text-dark" href="#">{{ pi['name'] }}</a></h3>
+
+                 <!--                <button class="btn btn-light btn-outline-dark btn-sm" type="button"
+                            onclick="go_to_users_page('{{ pi['id']|safe }}', '{{ login }}', '{{ pi['location']|safe }}')">Users page
+                    </button>-->
+
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="go_to_users_page('{{ pi['id']|safe }}', '{{ login }}', '{{ pi['location']|safe }}')">Users page</button>
+                </div>
+
+
                 <div class="input-group-append">
                     <div class="input-group-text">name: {{ pi['name'] }}</div>
 <!--                    <input type="text" class="form-control" id="{{ pi['name']|safe }}"-->
 <!--                           placeholder="new name here">-->
+                </div>
+
+                <div class="input-group-append">
+                    <div class="input-group-text">location: {{ pi['location'] }}</div>
+                    <!--                    <input type="text" class="form-control" id="{{ pi['location']|safe }}"-->
+                    <!--                           placeholder="new location here" value="{{ pi['location']|safe }}">-->
                 </div>
 
                 <div class="input-group-append">
@@ -133,6 +146,7 @@
 <!--                           placeholder="new active here">-->
                     <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="turn_off('{{ pi['name']|safe }}')">Turn off</button>
                 </div>
+
 <!--                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes_active('{{ pi['id']|safe }}', '{{ pi['name']|safe }}', '{{ pi['price']|safe }}')">Save changes-->
 <!--                </button>-->
             </div>
@@ -159,6 +173,15 @@
                 <strong class="d-inline-block mb-2 text-primary">ID: {{ id }}</strong>
                 <strong class="d-inline-block mb-2 text-primary">uuid: {{ pi['uuid'] }}</strong>
                 <h3 class="mb-0"><a class="text-dark" href="#">{{ pi['name'] }}</a></h3>
+
+                 <!--                <button class="btn btn-light btn-outline-dark btn-sm" type="button"
+                            onclick="go_to_users_page('{{ pi['id']|safe }}', '{{ login }}', '{{ pi['location']|safe }}')">Users page
+                    </button>-->
+
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-light btn-outline-dark w-60" onclick="go_to_users_page('{{ pi['id']|safe }}', '{{ login }}', '{{ pi['location']|safe }}')">Users page</button>
+                </div>
+
                 <div class="input-group-append">
                     <div class="input-group-text">name: {{ pi['name'] }}</div>
                     <input type="text" class="form-control" id="{{ pi['name']|safe }}"
@@ -167,8 +190,8 @@
 
                 <div class="input-group-append">
                     <div class="input-group-text">location: {{ pi['location'] }}</div>
-                    <input type="text" class="form-control" id="{{ pi['location']|safe }}"
-                           placeholder="new location here" value="{{ pi['location']|safe }}">
+<!--                    <input type="text" class="form-control" id="{{ pi['location']|safe }}"-->
+<!--                           placeholder="new location here" value="{{ pi['location']|safe }}">-->
                 </div>
 
                 <div class="input-group-append">

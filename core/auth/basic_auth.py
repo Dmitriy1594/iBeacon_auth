@@ -49,7 +49,7 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security),
     admin = crud_admins.get_admin_by_login_password(db=db, login=credentials.username,
                                                     hashed_password=hashed_password)
     if admin is not None:
-        return credentials.username, hashed_password
+        return credentials.username
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

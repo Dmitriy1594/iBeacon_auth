@@ -91,7 +91,7 @@
                            placeholder="new value here" value='00001200-0000-1000-8000-00805f9b34fb'>
                 </div>
 
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="create_user()">Create user</button>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="create_user('{{ location|safe }}')">Create user</button>
 
             </div>
         </div>
@@ -141,7 +141,7 @@
     <h1>No active users</h1>
 </div>
 <div class="container">
-    {% for user in users_active %}
+    {% for user in users_no_active %}
     <div class="col-lg-12 col-md-6">
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start block_inline">
@@ -163,25 +163,25 @@
 <!--                </div>-->
 
                 <div class="input-group-append">
-                    <div class="input-group-text">bluetooth_address_1</div>
+                    <div class="input-group-text">bluetooth_address_1: {{ user['bluetooth_address_1']|safe }}</div>
                     <input type="text" class="form-control" id="{{ user['bluetooth_address_1']|safe }}"
                            placeholder="new value here" value="{{ user['bluetooth_address_1']|safe }}">
                 </div>
 
                 <div class="input-group-append">
-                    <div class="input-group-text">bluetooth_address_2</div>
+                    <div class="input-group-text">bluetooth_address_2: {{ user['bluetooth_address_2']|safe }}</div>
                     <input type="text" class="form-control" id="{{ user['bluetooth_address_2']|safe }}"
                            placeholder="new value here" value="{{ user['bluetooth_address_2']|safe }}">
                 </div>
 
                 <div class="input-group-append">
-                    <div class="input-group-text">uuid_device_1</div>
+                    <div class="input-group-text">uuid_device_1: {{ user['uuid_device_1']|safe }}</div>
                     <input type="text" class="form-control" id="{{ user['uuid_device_1']|safe }}"
                            placeholder="new value here" value="{{ user['uuid_device_1']|safe }}">
                 </div>
 
                 <div class="input-group-append">
-                    <div class="input-group-text">uuid_device_2</div>
+                    <div class="input-group-text">uuid_device_2: {{ user['uuid_device_2']|safe }}</div>
                     <input type="text" class="form-control" id="{{ user['uuid_device_2']|safe }}"
                            placeholder="new value here" value="{{ user['uuid_device_2']|safe }}">
                 </div>
@@ -189,12 +189,21 @@
                 <div class="input-group-append">
                     <div class="input-group-text" id="no_active">active: {{ user['active'] }}</div>
                 </div>
-                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes('{{ user['id']|safe }}', '{{ user['name']|safe }}', )">Save changes</button>
+                <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="save_changes(
+                    '{{ user['name']|safe }}',
+                    '{{ user['surname']|safe }}',
+                    '{{ user['last_name']|safe }}',
+                    '{{ user['bluetooth_address_1']|safe }}',
+                    '{{ user['bluetooth_address_2']|safe }}',
+                    '{{ user['uuid_device_1']|safe }}',
+                    '{{ user['uuid_device_2']|safe }}',
+                    )">Save changes</button>
                 <button type="button" class="btn btn-light btn-outline-dark w-25" onclick="delete_user('{{ user['id']|safe }}', true)">Delete User</button>
             </div>
 <!--            <div class="card-body d-flex flex-column align-items-start block_inline">-->
 <!--                <strong class="d-inline-block mb-2 text-primary" id="count_visitors_{{ user['uuid']|safe }}">Count Visitors: {{ user['count_visitors'] }}</strong>-->
 <!--            </div>-->
+            </div>
         </div>
     </div>
     {% endfor %}

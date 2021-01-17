@@ -33,17 +33,16 @@ from core.auth.token import api_token_hash, generate_random_token
 
 from config.settings import PATH_TO_API, SERVER_URL, PI_SSH_CONNECTION_PROPERTIES, PORT
 
-# router = APIRouter()
-#
-#
-# # Dependency
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-from . import router, get_db
+router = APIRouter()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @router.get(

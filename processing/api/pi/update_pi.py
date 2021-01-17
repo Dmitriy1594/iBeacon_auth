@@ -33,17 +33,16 @@ from core.auth.token import api_token_hash, generate_random_token
 
 from config.settings import PATH_TO_API, SERVER_URL, PI_SSH_CONNECTION_PROPERTIES, PORT
 
-# router = APIRouter()
-#
-#
-# # Dependency
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-from . import router, get_db
+router = APIRouter()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @router.post(
@@ -178,3 +177,28 @@ def update_activate_by_name(pi: schemas.PIFindBase, db: Session = Depends(get_db
     name = pi.name
     active = pi.active
     return crud.update_pi_active(db, name, active)
+
+
+@router.post(
+    f"{PATH_TO_API}" + "/update_turn_by_pi/",
+    # response_model=schemas.PIsettings,
+    tags=["PI", ]
+)
+def update_turn_by_pi(pi: schemas.PIFindBase, db: Session = Depends(get_db)):
+    pi_ = crud.get_pi_by_name(db, name=pi.name)
+    active = pi_.active
+    if active == False:
+        info = {
+            "info_output": "Program is running!"
+        }
+
+        # update in DB
+        crud.update_pi_active(db, pi.name, True)
+
+        # result
+        return JSONResponse(content=jsonable_encoder(info))
+    else:
+        info = {
+            "info_output": "This PI is active!",
+        }
+        return JSONResponse(content=jsonable_encoder(info))

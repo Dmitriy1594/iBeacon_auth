@@ -35,17 +35,16 @@ from core.auth.token import api_token_hash, generate_random_token
 
 from config.settings import PATH_TO_API
 
-# router = APIRouter()
-#
-#
-# # Dependency
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-from . import router, get_db
+router = APIRouter()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @router.post(
@@ -85,4 +84,34 @@ def update_uuid2_by_fio(user: schemas.UserUpdate2, db: Session = Depends(get_db)
 )
 def update_cv_by_fio(user: schemas.UserUpdateCV, db: Session = Depends(get_db)):
     db_user = crud.update_cv_by_fio(db, user)
+    return db_user
+
+
+@router.post(
+    f"{PATH_TO_API}" + "/activate_by_fio/",
+    response_model=schemas.User,
+    tags=["User", ]
+)
+def activate_by_fio(user: schemas.UserUpdateActive, db: Session = Depends(get_db)):
+    db_user = crud.activate_by_fio(db, user)
+    return db_user
+
+
+@router.post(
+    f"{PATH_TO_API}" + "/deactivate_by_fio/",
+    response_model=schemas.User,
+    tags=["User", ]
+)
+def deactivate_by_fio(user: schemas.UserUpdateActive, db: Session = Depends(get_db)):
+    db_user = crud.deactivate_by_fio(db, user)
+    return db_user
+
+
+@router.post(
+    f"{PATH_TO_API}" + "/increase_cv_by_fio/",
+    response_model=schemas.User,
+    tags=["User", ]
+)
+def increase_cv_by_fio(user: schemas.UserUpdateCV, db: Session = Depends(get_db)):
+    db_user = crud.increase_cv_by_fio(db, user)
     return db_user

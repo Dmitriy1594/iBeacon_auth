@@ -9,7 +9,7 @@ function auth() {
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let json = JSON.parse(this.responseText);
-            console.log(json);
+            // console.log(json);
             // redirect
             go_to_menu(json)
         }
@@ -23,9 +23,9 @@ function auth() {
 
 const GET_MENU_URL = "http://0.0.0.0:5002/menu_pis"
 
-function go_to_menu(id, login) {
-    let params = new URLSearchParams({id: id, login: login});
-    window.location.replace(GET_MENU_URL + params.toString());
+function go_to_menu(json) {
+    let params = new URLSearchParams({id: json.id, login: json.login});
+    window.location.replace(GET_MENU_URL + "?" + String(params.toString()));
 }
 
 const SIGN_UP_URL = "http://0.0.0.0:5002/register";

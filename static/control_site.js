@@ -1,9 +1,15 @@
+const GET_USERS_URL = "http://0.0.0.0:5002/menu_users"
+
+function go_to_users_page(id, login, location) {
+    let params = new URLSearchParams({id: id, login: login, location: location});
+    window.location.replace(GET_USERS_URL + "?" + params.toString());
+}
+
+
 const CREATE_URL = "http://0.0.0.0:5002/v1/create_pi/";
 
 function create_pi() {
     let name = document.getElementById("pi_name").value;
-    let price = parseFloat(document.getElementById("pi_price").value);
-    let currencies = JSON.parse(document.getElementById("pi_currencies").value);
     let count_visitors = parseInt(document.getElementById("pi_count_visitors").value);
     let address = document.getElementById("pi_address").value;
     let uuid = document.getElementById("pi_uuid").value;
@@ -30,8 +36,6 @@ function create_pi() {
     xhr.setRequestHeader("Content-Type", "application/json");
     let data = JSON.stringify({
         "name": name,
-        "price": price,
-        "currencies": currencies,
         "count_visitors": count_visitors,
         "address": address,
         "uuid": uuid,
@@ -110,8 +114,8 @@ function go_to_login_page() {
 const TURN_ON_PI = "http://0.0.0.0:5002/v1/turn_on/";
 
 function turn_on(name, alert_ = true) {
-    // update data before start
-    deploy_data_to_pi(name);
+    // update settings before start
+    update_settings(name);
 
     let xhr = new XMLHttpRequest();
 
@@ -206,7 +210,6 @@ function save_changes(
 ) {
     let new_name = document.getElementById(name).value;
     // parseFloat("554,20".replace(",", "."))
-    let new_price = parseFloat(document.getElementById(price).value);
     let new_meters_detection = parseFloat(document.getElementById(meters_detection).value);
     let new_ignore_seconds = parseFloat(document.getElementById(ignore_seconds).value);
     let new_scanning_seconds = parseFloat(document.getElementById(scanning_seconds).value);
@@ -234,7 +237,6 @@ function save_changes(
         {
             "id": id,
             "name": new_name,
-            "price": new_price,
             "meters_detection": new_meters_detection,
             "ignore_seconds": new_ignore_seconds,
             "scanning_seconds": new_scanning_seconds,
